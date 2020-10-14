@@ -1,0 +1,21 @@
+
+.main-table {
+  /* position: absolute; */
+  border: 1px solid black;
+  border-collapse: collapse;
+
+  overflow: scroll;
+}
+
+.main-table td, .main-table th {
+  border: 1px solid black;
+  
+}
+
+.head-cell {
+  color: red;
+}
+
+.cell {
+  min-width: 50px;
+}
