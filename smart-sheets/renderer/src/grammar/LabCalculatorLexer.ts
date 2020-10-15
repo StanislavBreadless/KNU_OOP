@@ -72,7 +72,8 @@ export class LabCalculatorLexer extends Lexer {
 	// @Override
 	public get ruleNames(): string[] { return LabCalculatorLexer.ruleNames; }
 
-	// @Override
+  // @Override
+  // @ts-ignore
 	public get serializedATN(): string { return LabCalculatorLexer._serializedATN; }
 
 	// @Override

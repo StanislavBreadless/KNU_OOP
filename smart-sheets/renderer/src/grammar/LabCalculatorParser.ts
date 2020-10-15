@@ -69,7 +69,8 @@ export class LabCalculatorParser extends Parser {
 	// @Override
 	public get ruleNames(): string[] { return LabCalculatorParser.ruleNames; }
 
-	// @Override
+  // @Override
+  // @ts-ignore
 	public get serializedATN(): string { return LabCalculatorParser._serializedATN; }
 
 	constructor(input: TokenStream) {
@@ -323,7 +324,8 @@ export class CompileUnitContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
-	// @Override
+  // @Override
+  // @ts-ignore
 	public get ruleIndex(): number { return LabCalculatorParser.RULE_compileUnit; }
 	// @Override
 	public enterRule(listener: LabCalculatorListener): void {
@@ -352,7 +354,8 @@ export class ExpressionContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
-	// @Override
+  // @Override
+  // @ts-ignore
 	public get ruleIndex(): number { return LabCalculatorParser.RULE_expression; }
 	public copyFrom(ctx: ExpressionContext): void {
 		super.copyFrom(ctx);
@@ -426,6 +429,7 @@ export class ExponentialExprContext extends ExpressionContext {
 	}
 }
 export class MultiplicativeExprContext extends ExpressionContext {
+  // @ts-ignore
 	public _operatorToken: Token;
 	public expression(): ExpressionContext[];
 	public expression(i: number): ExpressionContext;
@@ -464,6 +468,7 @@ export class MultiplicativeExprContext extends ExpressionContext {
 	}
 }
 export class AdditiveExprContext extends ExpressionContext {
+  // @ts-ignore
 	public _operatorToken: Token;
 	public expression(): ExpressionContext[];
 	public expression(i: number): ExpressionContext;
