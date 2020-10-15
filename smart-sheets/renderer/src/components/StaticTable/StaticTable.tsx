@@ -27,11 +27,15 @@ const tHead = (colNumber: number) => {
 };
 
 const tRow = (colNumber: number, id: number) => {
-  const headCell = 'cell';
-  const cells: Array<React.ReactElement> = [<th className={headCell} key={-1}>{id}</th>];
+  const cell = 'cell';
+  const cells: Array<React.ReactElement> = [<td className={cell} key={-1}>{id}</td>];
 
   for(let i = 0; i < colNumber; i++) {
-    cells.push(<td className='cell'></td>)
+    cells.push((
+      <td className={cell} key={i}>
+        <input className='cell-input'></input>
+      </td>
+    ))
   }
 
   return (
