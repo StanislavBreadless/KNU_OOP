@@ -1,4 +1,4 @@
-// Generated from src/grammar/LabCalculator.g4 by ANTLR 4.7.3-SNAPSHOT
+// Generated from src/grammar/g4/LabCalculator.g4 by ANTLR 4.7.3-SNAPSHOT
 
 
 import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
@@ -7,6 +7,7 @@ import { ParenthesizedExprContext } from "./LabCalculatorParser";
 import { ExponentialExprContext } from "./LabCalculatorParser";
 import { MultiplicativeExprContext } from "./LabCalculatorParser";
 import { AdditiveExprContext } from "./LabCalculatorParser";
+import { AdditiveUnaryExprContext } from "./LabCalculatorParser";
 import { NumberExprContext } from "./LabCalculatorParser";
 import { IdentifierExprContext } from "./LabCalculatorParser";
 import { CompileUnitContext } from "./LabCalculatorParser";
@@ -69,6 +70,19 @@ export interface LabCalculatorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitAdditiveExpr?: (ctx: AdditiveExprContext) => void;
+
+	/**
+	 * Enter a parse tree produced by the `AdditiveUnaryExpr`
+	 * labeled alternative in `LabCalculatorParser.expression`.
+	 * @param ctx the parse tree
+	 */
+	enterAdditiveUnaryExpr?: (ctx: AdditiveUnaryExprContext) => void;
+	/**
+	 * Exit a parse tree produced by the `AdditiveUnaryExpr`
+	 * labeled alternative in `LabCalculatorParser.expression`.
+	 * @param ctx the parse tree
+	 */
+	exitAdditiveUnaryExpr?: (ctx: AdditiveUnaryExprContext) => void;
 
 	/**
 	 * Enter a parse tree produced by the `NumberExpr`

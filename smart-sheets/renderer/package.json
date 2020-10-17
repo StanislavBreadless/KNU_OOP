@@ -39,7 +39,7 @@
     "release": "npm run react-build && electron-builder --publish=always",
     "build": "npm run react-prebuild && npm run react-build && npm run electron-build",
     "start": "cross-env BROWSER=none npm run react-start",
-    "antlr4ts": "antlr4ts -visitor src/grammar/LabCalculator.g4",
+    "antlr4ts": "antlr4ts -visitor src/grammar/g4/LabCalculator.g4",
     "test": "mocha -r ts-node/register src/tests/*.ts"
   },
   "eslintConfig": {
