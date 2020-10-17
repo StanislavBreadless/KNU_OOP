@@ -12,6 +12,7 @@ import { IdentifierExprContext } from "./LabCalculatorParser";
 import { CompileUnitContext } from "./LabCalculatorParser";
 import { ExpressionContext } from "./LabCalculatorParser";
 
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced
@@ -20,7 +21,7 @@ import { ExpressionContext } from "./LabCalculatorParser";
  * @param <Result> The return type of the visit operation. Use `void` for
  * operations with no return type.
  */
-export interface LabCalculatorVisitor<Result> extends ParseTreeVisitor<Result> {
+export abstract class LabCalculatorVisitor<Result> extends AbstractParseTreeVisitor<Result> {
 	/**
 	 * Visit a parse tree produced by the `ParenthesizedExpr`
 	 * labeled alternative in `LabCalculatorParser.expression`.
