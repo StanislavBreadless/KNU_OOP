@@ -24,7 +24,6 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid slategrey;
 }
 
-.table-wrapper {
-  margin-top: 90px;
-  /* margin-left: 10px; */
+.input-header {
+  padding: 20px;
 }
