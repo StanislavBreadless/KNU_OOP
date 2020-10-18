@@ -5,7 +5,7 @@ import * as Constants from '../table-manager/Constants';
 
 const allowedPrecision = 0.001;
 
-describe('Table manager', () => {
+describe('TableManager', () => {
 
   it('Raw value storage', () => {
     const tableManager = new TableManager();
@@ -43,6 +43,16 @@ describe('Table manager', () => {
 
     tableManager.setCell('a10', '= 5*b10');
     expect(tableManager.getCellValue('a10')).to.equal('60');
+    expect(tableManager.getCellRawValue('a10')).to.equal('= 5*b10');
+  });
+
+  it('Empty cell reference evaluation', () => {
+    const tableManager = new TableManager();
+
+    tableManager.setCell('b10', '');
+
+    tableManager.setCell('a10', '= 5*b10');
+    expect(tableManager.getCellValue('a10')).to.equal('0');
     expect(tableManager.getCellRawValue('a10')).to.equal('= 5*b10');
   });
 

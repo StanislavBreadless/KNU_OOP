@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { FormulaEvaluator } from '../table-manager/FormulaEvaluator';
 
-describe('Basic parsing', () => {
+describe('FormulaEvaluator', () => {
   const evaluator = new FormulaEvaluator();
 
   it('Returning one number', () => {

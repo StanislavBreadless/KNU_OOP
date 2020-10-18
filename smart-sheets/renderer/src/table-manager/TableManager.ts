@@ -1,7 +1,9 @@
 import { Cell } from './Cell';
 import { FormulaEvaluator } from './FormulaEvaluator';
-import { INVALID_CELL } from './Constants';
 import { TouchBarScrubber } from 'electron';
+import { constants } from 'os';
+import * as Constants from './Constants';
+import { cursorTo } from 'readline';
 
 export class TableManager {
 
@@ -16,14 +18,14 @@ export class TableManager {
       const regResult = cellRegex.exec(id);
 
       if (!regResult) {
-        throw new Error(INVALID_CELL);
+        throw new Error(Constants.INVALID_CELL);
       }
 
       const column = regResult[1];
       const row = regResult[2];
 
 
-      const newCell = new Cell(+row, column);
+      const newCell = new Cell(+row, column, id);
 
       this.values.set(id, newCell);
 
@@ -59,7 +61,7 @@ export class TableManager {
         }
       });
 
-    }while(changesFound);
+    } while(changesFound);
   }
 
   /// Sets the value of a cell without updating all other cells
@@ -71,7 +73,16 @@ export class TableManager {
     const plainTextMode = !value.startsWith('=');
 
     if (plainTextMode) {
-      cell.setValue(value);
+      const formula = value;
+      const newValue = this.evaluateCell(cell, formula);
+
+      if(isFinite(+newValue) && newValue.length > 5) {
+        cell.setValue((+newValue).toFixed(2));
+      } else if (isFinite(+newValue)) {
+        cell.setValue(newValue);
+      } else {
+        cell.setValue(value);
+      }
     } else {
       const formula = value.slice(1);
       const newValue = this.evaluateCell(cell, formula);
@@ -89,12 +100,46 @@ export class TableManager {
     this.updateAllCells();
   }
 
+  private checkCycle(cell: Cell, rootCellId: string, depth: number = 1) {
+    // depth is just a backup variable, in case the recursion goes too deep
+    if (cell.getId().trim() === rootCellId.trim() || depth > 5000) {
+      throw new Error(Constants.CYCLIC_DEPENDENCY);
+    }
+
+    const deps = cell.getDependencies();
+
+    deps.forEach((dep) => {
+      const depCell = this.getCell(dep);
+      this.checkCycle(depCell, rootCellId, depth + 1);
+    });
+  }
+
   private evaluateCell(cell: Cell, formula: string): string {
+    cell.clearDependecies();
+
+    const cellId = cell.getId();
     const regex = /[a-zA-z]+[0-9]+/;
     const evaluatedValue = this.evaluator.evaluate(
       formula,
       (variable: string) => {
-        return this.getCell(variable).getValue();
+
+        const varCell = this.getCell(variable);
+
+        cell.addDependecy(varCell.getId());
+
+        const value = varCell.getValue();
+        if(!isFinite(+value) && varCell.getId() !== cellId) {
+          return '0';
+        }
+
+        try {
+        // Will throw an exception if a cycle is detected
+          this.checkCycle(varCell, cellId);
+        } catch(err) {
+          cell.clearDependecies();
+          throw err;
+        }
+        return value;
       }
     )
 

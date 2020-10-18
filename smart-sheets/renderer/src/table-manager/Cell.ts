@@ -3,6 +3,7 @@
 export class Cell {
   private value: string;
   private rawValue: string;
+  private id: string;
 
   public readonly row: number;
   public readonly column: string;
@@ -21,9 +22,18 @@ export class Cell {
     this.dependencies.clear();
   }
 
-  constructor(row: number, column: string) {
+  public getDependencies() {
+    return this.dependencies;
+  }
+
+  public getId() {
+    return this.id;
+  }
+
+  constructor(row: number, column: string, id: string) {
     this.row = row;
     this.column = column;
+    this.id = id;
     this.value = '';
     this.rawValue = '';
     this.dependencies = new Set();
