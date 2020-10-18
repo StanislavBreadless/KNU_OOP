@@ -90,6 +90,4 @@ describe('Error handling in TableManager', () => {
     expect(+tableManager.getCellValue('a10')).to.be.closeTo(19, allowedPrecision);
   });
 
-
-
 });

@@ -5,6 +5,18 @@ import { constants } from 'os';
 import * as Constants from './Constants';
 import { cursorTo } from 'readline';
 
+interface CellSerialization {
+  row: number,
+  column: string,
+  id: string,
+  rawValue: string,
+  key: string
+}
+
+interface TableSerialization {
+  cells: Array<CellSerialization>
+}
+
 export class TableManager {
 
   private values: Map<string, Cell>;
@@ -162,8 +174,46 @@ export class TableManager {
   constructor() {
     this.values = new Map();
     this.evaluator = new FormulaEvaluator();
+  } 
 
-    // this.initCells(rows, columns);
+  public static fromSerialization(serialization: string): TableManager {
+    const tableManager = new TableManager();
+
+    const obj = JSON.parse(serialization);
+    if(!obj || !obj.cells) {
+      throw new Error(Constants.INVALID_SERIALIZATION);
+    }
+
+    const tableSerializationObject = obj as TableSerialization;
+
+    tableSerializationObject.cells.forEach((cell) => {
+      const tableCell = new Cell(cell.row, cell.column, cell.id);
+
+      tableManager.values.set(cell.key, tableCell);
+
+      tableManager.setCell(cell.id, cell.rawValue);
+    });
+
+    return tableManager;
   }
 
+  public serialize(): string {
+    const cells: Array<CellSerialization> = [];
+
+    this.values.forEach((cell, key) => {
+      cells.push({
+        rawValue: cell.getRawValue(),
+        row: cell.getRow(),
+        column: cell.getColumn(),
+        id: cell.getId(),
+        key: key
+      });
+    });
+
+    const serializationObj: TableSerialization =  {
+      cells
+    };
+
+    return JSON.stringify(serializationObj);
+  } 
 }

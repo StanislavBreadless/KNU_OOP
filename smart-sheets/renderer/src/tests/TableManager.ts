@@ -105,4 +105,20 @@ describe('TableManager', () => {
     expect(+tableManager.getCellValue('a10')).to.be.closeTo(10, allowedPrecision);
   });
 
+  it('Save & load', () => {
+    const tableManager = new TableManager();
+
+    tableManager.setCell('b10', '= 12');
+    tableManager.setCell('a10', '= 5*b10');
+    expect(tableManager.getCellValue('a10')).to.equal('60');
+    expect(tableManager.getCellRawValue('a10')).to.equal('= 5*b10');
+
+    const saveText = tableManager.serialize();
+
+    const newTable = TableManager.fromSerialization(saveText);
+    
+    expect(newTable.getCellValue('a10')).to.equal('60');
+    expect(newTable.getCellRawValue('a10')).to.equal('= 5*b10');
+
+  });
 });

@@ -30,6 +30,14 @@ export class Cell {
     return this.id;
   }
 
+  public getRow() {
+    return this.row;
+  }
+
+  public getColumn() {
+    return this.column;
+  }
+
   constructor(row: number, column: string, id: string) {
     this.row = row;
     this.column = column;
