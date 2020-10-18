@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { resolve } from 'dns';
 import { FormulaEvaluator } from '../table-manager/FormulaEvaluator';
 
 describe('Basic parsing', () => {
@@ -21,7 +22,7 @@ describe('Basic parsing', () => {
 
     expect(
       evaluator.evaluate(formula, resolver)
-    ).to.be.equal('123');
+    ).to.equal('123');
   });
 
   it('Additive expression', () => {
@@ -33,7 +34,7 @@ describe('Basic parsing', () => {
 
     expect(
       evaluator.evaluate(formula, resolver)
-    ).to.be.equal('39');
+    ).to.equal('39');
   });
 
   it('Mutliplicative expression', () => {
@@ -55,7 +56,7 @@ describe('Basic parsing', () => {
 
     expect(
       (+evaluator.evaluate(formula, resolver)).toFixed(6)
-    ).to.be.equal('2090.666667');
+    ).to.equal('2090.666667');
   });
 
   it('Mutliplicative expression', () => {
@@ -77,6 +78,46 @@ describe('Basic parsing', () => {
 
     expect(
       (+evaluator.evaluate(formula, resolver)).toFixed(6)
-    ).to.be.equal('2090.666667');
+    ).to.equal('2090.666667');
+  });
+
+  it('Parenthesized expression', () => {
+    const values = {
+      "a10": '12',
+      "b10": '134'
+    };
+
+    const formula = '(a10 + b10) * 3 + 10';
+
+    const resolver = (variable: string) => {
+      // @ts-ignore
+      return values[variable] as string;
+    }
+
+    expect(
+      (+evaluator.evaluate(formula, resolver)).toFixed(6)
+    ).to.equal('448.000000');
+  });
+
+  it('Ultimate expression', () => {
+    const values = {
+      "a10": '12',
+      "b10": '134',
+      "c10": '90',
+      "d10": '110'
+    };
+
+    /// (12 + 134)*3/10 + 30 - 90 = 43.8 + 20 - 90 = 
+    /// = -26.2
+    const formula = '(a10 + b10) * 3 / 10 + d10 mod c10 - c10 div 1';
+
+    const resolver = (variable: string) => {
+      // @ts-ignore
+      return values[variable] as string;
+    }
+
+    expect(
+      (+evaluator.evaluate(formula, resolver)).toFixed(6)
+    ).to.equal('-26.200000');
   });
 });

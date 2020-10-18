@@ -103,4 +103,9 @@ export class FormulaVisitor extends LabCalculatorVisitor<string> {
 
     return WRONG_FORMAT;
   }
+
+  // @ts-ignore
+  visitParenthesizedExpr(ext: ParenthesizedExprContext): string {
+    return this.visitChildren(ext);
+  }
 }
