@@ -12,39 +12,46 @@ import { IdentifierExprContext } from "../grammar/LabCalculatorParser";
 import { CompileUnitContext } from "../grammar/LabCalculatorParser";
 import { ExpressionContext } from "../grammar/LabCalculatorParser";
 import { ParseTree } from 'antlr4ts/tree';
+import { resolve } from 'dns';
 
-const WRONG_FORMAT = 'Wrong format error';
+import { WRONG_FORMAT } from './Constants';
 
-export class FormulaVisitor extends LabCalculatorVisitor<string> {
+export class FormulaVisitor extends LabCalculatorVisitor<number> {
   public defaultResult() {
-    return '';
+    return 0;
   }
 
-  constructor(private variableResolver: (variable: string) => string) {
+  constructor(private variableResolver: (variable: string) => number) {
     super();
   }
 
-  aggregateResult(aggregate: string, nextResult: string) {
-    return (+aggregate + nextResult).toString();
+  aggregateResult(aggregate: number, nextResult: number) {
+    return aggregate + nextResult;
   }
 
   // @ts-ignore 
-  visitIdentifierExpr(ctx: IdentifierExprContext): string {
+  visitIdentifierExpr(ctx: IdentifierExprContext): number {
     return this.variableResolver(ctx.text);
   }
 
   // @ts-ignore
-  visitExpression(ctx: ExpressionContext): string {
+  visitExpression(ctx: ExpressionContext): number {
     return this.visitChildren(ctx);
   }
 
   // @ts-ignore
-  visitNumberExpr(ctx: NumberExprContext): string {
-    return ctx.text;
+  visitNumberExpr(ctx: NumberExprContext): number {
+    const result = +ctx.text;
+
+    if(!isFinite(result)) {
+      throw new Error(WRONG_FORMAT);
+    }
+
+    return result;
   }
 
   // @ts-ignore
-  visitAdditiveExpr(ctx: AdditiveExprContext): string {
+  visitAdditiveExpr(ctx: AdditiveExprContext): number {
     this.visitChildren(ctx);
 
     const leftExpr = ctx.expression(0);
@@ -57,18 +64,18 @@ export class FormulaVisitor extends LabCalculatorVisitor<string> {
     const sub = ctx.SUBTRACT();
 
     if(!isFinite(leftValue) || !isFinite(rightValue)) {
-      return WRONG_FORMAT;
+      throw new Error(WRONG_FORMAT);
     } else if (add) {
-      return (leftValue + rightValue).toString();
+      return leftValue + rightValue;
     } else if (sub) {
-      return (leftValue - rightValue).toString();
+      return leftValue - rightValue;
     } else {
-      return WRONG_FORMAT;
+      throw new Error(WRONG_FORMAT);
     }
   }
 
   // @ts-ignore 
-  visitMultiplicativeExpr(ctx: MultiplicativeExprContext): string {
+  visitMultiplicativeExpr(ctx: MultiplicativeExprContext): number {
     this.visitChildren(ctx);
 
     const leftExpr = ctx.expression(0);
@@ -83,29 +90,27 @@ export class FormulaVisitor extends LabCalculatorVisitor<string> {
     const rightValue = +this.visit(rightExpr);
 
     if(!isFinite(leftValue) || !isFinite(rightValue)) {
-      return WRONG_FORMAT;
+      throw new Error(WRONG_FORMAT);
     }
 
     if (multiply) {
-      return (leftValue * rightValue).toString();
+      return leftValue * rightValue;
     }
     if (divide) {
-      return (leftValue / rightValue).toString();
+      return leftValue / rightValue;
     }
     if (div) {
-      const val1 = +leftValue;
-      const val2 = +rightValue;
-      return Math.floor(val1 / val2).toString();
+      return Math.floor(leftValue / rightValue);
     }
     if (mod) {
-      return (leftValue % rightValue).toString();
+      return leftValue % rightValue;
     }
 
-    return WRONG_FORMAT;
+    throw new Error(WRONG_FORMAT);
   }
 
   // @ts-ignore
-  visitParenthesizedExpr(ext: ParenthesizedExprContext): string {
+  visitParenthesizedExpr(ext: ParenthesizedExprContext): number {
     return this.visitChildren(ext);
   }
 }

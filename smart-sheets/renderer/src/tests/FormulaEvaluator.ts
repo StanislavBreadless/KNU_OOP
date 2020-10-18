@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { resolve } from 'dns';
 import { FormulaEvaluator } from '../table-manager/FormulaEvaluator';
 
 describe('Basic parsing', () => {
@@ -120,4 +119,6 @@ describe('Basic parsing', () => {
       (+evaluator.evaluate(formula, resolver)).toFixed(6)
     ).to.equal('-26.200000');
   });
+
+
 });
