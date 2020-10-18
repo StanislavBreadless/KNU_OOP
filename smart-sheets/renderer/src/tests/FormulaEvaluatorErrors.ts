@@ -26,5 +26,4 @@ describe('Error handling in FormulaEvaluator', () => {
     ).to.equal(error.toString());
   });
 
-
 });

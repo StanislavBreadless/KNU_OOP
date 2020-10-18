@@ -9,7 +9,7 @@ import { ThrowingParserErrorListener, ThrowingLexerErrorListener } from './Error
 
 export class FormulaEvaluator {
 
-  evaluate(formula: string, variableResolver: (variable: string) => string) {
+  evaluate(formula: string, variableResolver: (variable: string) => string): string {
     try {
       const inputStream = CharStreams.fromString(formula);
       const lexer = new LabCalculatorLexer(inputStream);

@@ -7,11 +7,26 @@ export class Cell {
   public readonly row: number;
   public readonly column: string;
 
+  private dependencies: Set<string>;
+
+  public addDependecy(id: string) {
+    this.dependencies.add(id);
+  }
+
+  public removeDependecy(id: string) {
+    this.dependencies.delete(id);
+  }
+
+  public clearDependecies() {
+    this.dependencies.clear();
+  }
+
   constructor(row: number, column: string) {
     this.row = row;
     this.column = column;
     this.value = '';
     this.rawValue = '';
+    this.dependencies = new Set();
   }
 
   public setValue(newValue: string) {
