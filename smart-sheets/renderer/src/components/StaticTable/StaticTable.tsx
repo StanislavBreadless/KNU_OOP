@@ -6,6 +6,7 @@ import { getNextKey } from '../../helpers/utils';
 import { TableManager } from '../../table-manager/TableManager';
 import { IpcRenderer, IpcMessageEvent} from 'electron' ; 
 import './StaticTable.css';
+import { couldStartTrivia } from 'typescript';
 
 const electron  = window.require('electron') ;  // require electron like this in all the files. Don't Use import from 'electron' syntax for importing IpcRender from electron.
 
@@ -111,6 +112,21 @@ class StaticTable extends React.Component<StaticTableProps> {
     
     ipcRenderer.on('save-data', () => {
       ipcRenderer.send('save-data', this.tableManager.serialize());
+    });
+
+    ipcRenderer.on('load-data', (event: IpcMessageEvent, data: string) => {
+      try{
+        const newManager = TableManager.fromSerialization(data);
+        if(!newManager) {
+          throw new Error('Failed to parse file');
+        }
+
+        this.tableManager = newManager;
+        this.applyTableChanges();
+      } catch(err)  {
+        ipcRenderer.send('error', err.message);
+      } 
+
     });
 
   }

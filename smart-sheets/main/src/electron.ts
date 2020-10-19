@@ -22,8 +22,11 @@ const saveFile = (text: string) => {
   });
 };
 
-const openFile = () => {
 
+const openFile = (data: string) => {
+ 
+
+  mainWindow.webContents.send('load-data', data);
 } 
 
 let saveTableLock = false;
@@ -40,21 +43,48 @@ const saveTable = () => {
   });
 }
 
+let openFileLock = false;
+const openTable = () => {
+  if(openFileLock) {
+    return;
+  }
+  openFileLock = true;
+
+  const filePath = dialog.showOpenDialog(mainWindow, {});
+  if(!filePath) {
+    openFileLock = true;
+    return;
+  }
+
+  fs.readFile(filePath[0], {}, (err, data) => {
+    if(err) {
+      dialog.showErrorBox('Failed to open file', err.message);
+      openFileLock = false;
+      return;
+    }
+
+    mainWindow.webContents.send('load-data', data.toString());
+  });
+}
+
 const menuTemplate = [
   {
     label: 'Файл',
     submenu: [
       {
-        label: 'Зберегти ...',
+        label: 'Зберегти як...',
         click() {
           saveTable();
         }   
       },
       {
-        label: 'Відкрити ...'
+        label: 'Відкрити...',
+        click() {
+          openTable();
+        }
       },
       {
-        label: 'Закрити',
+        label: 'Закрити вікно',
         click() {
           mainWindow.close();
         }
@@ -79,6 +109,10 @@ function createWindow() {
 
     ipcMain.on('channel' , (event : IpcMessageEvent , msg: string)=>{
         
+    })
+
+    ipcMain.on('error', (event : IpcMessageEvent , msg: string)=>{
+        dialog.showErrorBox('Error', msg);
     })
 }
 
