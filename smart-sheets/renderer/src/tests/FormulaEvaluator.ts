@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { FormulaEvaluator } from '../table-manager/FormulaEvaluator';
 
+const allowedPrecision = 0.001;
+
 describe('FormulaEvaluator', () => {
   const evaluator = new FormulaEvaluator();
 
@@ -82,6 +84,18 @@ describe('FormulaEvaluator', () => {
     expect(
       evaluator.evaluate(formula, resolver)
     ).to.equal('12');
+  });
+
+  it('Exponentiation', () => {
+    const formula = 'a1^a0';
+
+    const resolver = (variable: string) => {
+      return variable === 'a1' ? '3.5' : '6';
+    }
+
+    expect(
+      +evaluator.evaluate(formula, resolver)
+    ).to.be.closeTo(1838.265625, allowedPrecision);
   });
 
   it('Mutliplicative expression', () => {

@@ -3,7 +3,7 @@
 import { 
   LabCalculatorVisitor,
 } from '../grammar/LabCalculatorVisitor';
-import { AdditiveUnaryExprContext, ParenthesizedExprContext } from "../grammar/LabCalculatorParser";
+import { AdditiveUnaryExprContext, ExponentialExprContext, ParenthesizedExprContext } from "../grammar/LabCalculatorParser";
 import { MultiplicativeExprContext } from "../grammar/LabCalculatorParser";
 import { AdditiveExprContext } from "../grammar/LabCalculatorParser";
 import { NumberExprContext } from "../grammar/LabCalculatorParser";
@@ -66,6 +66,22 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     }
   }
 
+  visitExponentialExpr = (ctx: ExponentialExprContext): number => {
+    this.visitChildren(ctx);
+
+    const leftExpr = ctx.expression(0);
+    const rightExpr = ctx.expression(1);
+
+    const leftValue = +this.visit(leftExpr);
+    const rightValue = +this.visit(rightExpr);
+
+    if(!isFinite(leftValue) || !isFinite(rightValue)) {
+      throw new Error(WRONG_FORMAT);
+    } else {
+      return Math.pow(leftValue, rightValue);
+    }
+  }
+
   visitMultiplicativeExpr = (ctx: MultiplicativeExprContext): number => {
     this.visitChildren(ctx);
 
@@ -117,6 +133,8 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
       return -value;
     }
   }
+
+
 
   visitParenthesizedExpr = (ext: ParenthesizedExprContext): number => {
     return this.visitChildren(ext);
