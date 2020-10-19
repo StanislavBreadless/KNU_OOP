@@ -49,11 +49,16 @@ tbody tr td:first-of-type {
 }
 
 td {
-  padding: 5px;
+  padding: 3px;
 }
 
 .cell-input {
   outline: none;
   border: none;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  width: 150px;
+}
+
+td:focus-within {
+  outline: 2px solid lightblue;
 }
