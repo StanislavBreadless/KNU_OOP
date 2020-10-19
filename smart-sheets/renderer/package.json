@@ -24,6 +24,8 @@
   "dependencies": {
     "antlr4ts": "^0.5.0-alpha.3",
     "electron-is-dev": "^1.1.0",
+    "esm": "^3.2.25",
+    "mocha": "^8.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
@@ -40,7 +42,7 @@
     "build": "npm run react-prebuild && npm run react-build && npm run electron-build",
     "start": "cross-env BROWSER=none npm run react-start",
     "antlr4ts": "antlr4ts -visitor src/grammar/g4/LabCalculator.g4",
-    "test": "mocha -r ts-node/register src/tests/*.ts"
+    "test": "ts-mocha -r esm -p tsconfig.json src/tests/*.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,8 +77,8 @@
     "electron-is-dev": "^1.1.0",
     "electron-reload": "^1.4.0",
     "env": "0.0.2",
-    "mocha": "^8.2.0",
     "nodemon": "^1.19.1",
+    "ts-mocha": "^7.0.0",
     "ts-node": "^9.0.0",
     "typescript": "^3.5.2",
     "wait-on": "^3.2.0",
