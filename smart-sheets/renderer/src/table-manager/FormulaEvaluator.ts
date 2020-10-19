@@ -3,7 +3,7 @@ import { LabCalculatorParser } from '../grammar/LabCalculatorParser';
 import { FormulaVisitor } from './FormulaVisitor';
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 
-import { BAD_VARIABLE } from './Constants';
+import { BAD_VARIABLE } from './ErrorMessages';
 
 import { ThrowingParserErrorListener, ThrowingLexerErrorListener } from './ErrorListener';
 

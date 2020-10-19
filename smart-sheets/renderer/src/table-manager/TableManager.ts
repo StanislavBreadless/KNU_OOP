@@ -1,10 +1,6 @@
 import { Cell } from './Cell';
 import { FormulaEvaluator } from './FormulaEvaluator';
-import { TouchBarScrubber } from 'electron';
-import { constants } from 'os';
-import * as Constants from './Constants';
-import { cursorTo } from 'readline';
-
+import * as Constants from './ErrorMessages';
 interface CellSerialization {
   row: number,
   column: string,
@@ -170,22 +166,8 @@ export class TableManager {
         return value;
       }
     )
-
-
-    /// 1. Parse the formula, get list of deps 
-    /// 2. DFS dependecies
-    /// 3. Evaluate with visitor 
-
     return evaluatedValue;
   }
-
-  // public getRows() {
-  //   return this.rows;
-  // }
-
-  // public getColumns() {
-  //   return this.columns;
-  // }
 
   constructor() {
     this.values = new Map();

@@ -5,7 +5,7 @@ import { ParserErrorListener } from 'antlr4ts/ParserErrorListener';
 
 import { ANTLRErrorListener } from 'antlr4ts/ANTLRErrorListener';
  
-import { WRONG_FORMAT } from './Constants';
+import { WRONG_FORMAT } from './ErrorMessages';
 
 export class ThrowingLexerErrorListener implements ANTLRErrorListener<number> {
   public static INSTANCE: ThrowingLexerErrorListener =  new ThrowingLexerErrorListener();

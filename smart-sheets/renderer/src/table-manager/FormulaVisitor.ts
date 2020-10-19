@@ -10,7 +10,7 @@ import { NumberExprContext } from "../grammar/LabCalculatorParser";
 import { IdentifierExprContext } from "../grammar/LabCalculatorParser";
 import { ExpressionContext } from "../grammar/LabCalculatorParser";
 
-import { WRONG_FORMAT } from './Constants';
+import { WRONG_FORMAT } from './ErrorMessages';
 
 export class FormulaVisitor extends LabCalculatorVisitor<number> {
   public defaultResult() {

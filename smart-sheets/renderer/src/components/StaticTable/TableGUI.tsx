@@ -13,93 +13,89 @@ const electron  = window.require('electron') ;  // require electron like this in
 let ipcRenderer : IpcRenderer  = electron.ipcRenderer ; 
 
 
-type StaticTableProps = {
+interface ITableGUIProps {
   colNumber: number,
   rowNumber: number
 }
 
-const tHead = (colNumber: number) => {
-  const headCell = 'cell head-cell';
-  const cells: Array<React.ReactElement> = [<th className={headCell} key={-1}></th>];
-
-  let key = 'A';
-  for(let i = 0; i < colNumber; key = getNextKey(key), i++) {
-    cells.push(<th className={headCell} key={key}>{key}</th>)
-  }
-
-  return (
-    <tr>
-      {cells}
-    </tr>
-  );
-};
-
-const tRow = (
-  colNumber: number, 
-  id: number,
-  localState: any,
-  updateLocalState: (id: string, value: string) => any,
-  startEdit: (id: string)=>any, 
-  inputFunction: (id: string, value: string) => any
-) => {
-  const cell = 'cell';
-  const cells: Array<React.ReactElement> = [<td className={cell} key={-1}>{id}</td>];
-
-  let key = 'A';
-  for(let i = 0; i < colNumber; key = getNextKey(key), i++) {
-    const currentId = key + id;
-    cells.push((
-      <td 
-        className={cell} 
-        key={currentId}
-      >
-        <input 
-          className='cell-input'
-          onChange={(e) => {
-            updateLocalState(currentId, e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              e.currentTarget.blur();
-            }
-          }}
-          onBlur={() => {inputFunction(currentId, localState[currentId]||'');}}
-          onFocus={() => {startEdit(currentId)}}
-          value={localState[currentId] || ''}
-        ></input>
-      </td>
-    ))
-  }
-
-  return (
-    <tr key={id}>
-      {cells}
-    </tr>
-  );
+interface ITableGUIState {
+  [key: string]: string
 }
 
-
-
-const tBody = (
-  colNumber: number, 
-  rowNumber: number,
-  localState: any,
-  updateLocalState: (id: string, value: string) => any,
-  startEdit: (id: string)=>any,
-  inputFunction: (id: string, value: string) => any
-) => {
-  const rows: Array<React.ReactElement> = [];
-
-  for(let i = 0; i < rowNumber; i++) {
-    rows.push(tRow(colNumber, i, localState, updateLocalState, startEdit, inputFunction));
-  }
-
-  return rows;
-}
-
-class StaticTable extends React.Component<StaticTableProps> {
+class TableGUI extends React.Component<ITableGUIProps, ITableGUIState> {
   private tableManager: TableManager;
-  constructor(props: StaticTableProps) {
+
+  private tHead(colNumber: number) {
+    const headCell = 'cell head-cell';
+    const cells: Array<React.ReactElement> = [<th className={headCell} key={-1}></th>];
+  
+    let key = 'A';
+    for(let i = 0; i < colNumber; key = getNextKey(key), i++) {
+      cells.push(<th className={headCell} key={key}>{key}</th>)
+    }
+  
+    return (
+      <tr>
+        {cells}
+      </tr>
+    );
+  };
+
+  private tRow(
+    colNumber: number, 
+    id: number
+  ) {
+    const cell = 'cell';
+    const cells: Array<React.ReactElement> = [<td className={cell} key={-1}>{id}</td>];
+  
+    let key = 'A';
+    for(let i = 0; i < colNumber; key = getNextKey(key), i++) {
+      const currentId = key + id;
+      cells.push((
+        <td 
+          className={cell} 
+          key={currentId}
+        >
+          <input 
+            className='cell-input'
+            onChange={(e) => {
+              this.updateLocalState(currentId, e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                e.currentTarget.blur();
+              }
+            }}
+            onBlur={() => {this.setInput(currentId, this.state[currentId]||'');}}
+            onFocus={() => {this.startEdit(currentId)}}
+            value={this.state[currentId] || ''}
+          ></input>
+        </td>
+      ))
+    }
+  
+    return (
+      <tr key={id}>
+        {cells}
+      </tr>
+    );
+  }
+
+  
+  private tBody (
+    colNumber: number, 
+    rowNumber: number,
+  ) {
+    const rows: Array<React.ReactElement> = [];
+
+    for(let i = 0; i < rowNumber; i++) {
+      rows.push(this.tRow(colNumber, i));
+    }
+
+    return rows;
+  }
+
+  constructor(props: ITableGUIProps) {
     super(props);
 
     this.state = {};
@@ -152,9 +148,7 @@ class StaticTable extends React.Component<StaticTableProps> {
   }
 
   setInput(id: string, value: string) {
-    console.log(id, value);
     this.tableManager.setCell(id, value);
-    console.log(this.tableManager.getCellValue(id));
     this.applyTableChanges();
   }
 
@@ -169,14 +163,10 @@ class StaticTable extends React.Component<StaticTableProps> {
   render() {
     const {colNumber, rowNumber} = this.props;
 
-    const headCells = tHead(colNumber);
-    const bodyCells = tBody(
+    const headCells = this.tHead(colNumber);
+    const bodyCells = this.tBody(
       colNumber, 
-      rowNumber, 
-      this.state, 
-      this.updateLocalState, 
-      this.startEdit,
-      this.setInput
+      rowNumber
     );
 
     return (
@@ -192,4 +182,4 @@ class StaticTable extends React.Component<StaticTableProps> {
   }
 }
 
-export default StaticTable;
+export default TableGUI;

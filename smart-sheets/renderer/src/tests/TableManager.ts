@@ -1,7 +1,7 @@
 import { TableManager } from '../table-manager/TableManager';
 import { expect } from 'chai';
 
-import * as Constants from '../table-manager/Constants';
+import * as Constants from '../table-manager/ErrorMessages';
 
 const allowedPrecision = 0.001;
 

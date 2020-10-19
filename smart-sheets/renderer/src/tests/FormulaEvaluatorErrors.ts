@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { FormulaEvaluator } from '../table-manager/FormulaEvaluator';
 
-import * as Constants from '../table-manager/Constants';
+import * as Constants from '../table-manager/ErrorMessages';
 
 describe('Error handling in FormulaEvaluator', () => {
   const evaluator = new FormulaEvaluator();
