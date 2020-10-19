@@ -1,78 +1,11 @@
-import { BrowserWindow , app , ipcMain, IpcMessageEvent, Menu, dialog, ipcRenderer } from 'electron' ; 
+import { BrowserWindow , app , ipcMain, IpcMessageEvent, Menu, dialog } from 'electron' ; 
 import * as isDev from "electron-is-dev" ; 
 import * as path from 'path'
 import * as fs from 'fs';
+import { FileManager } from './FileManager';
 
 let mainWindow : BrowserWindow ;
-
-let operationsCounter = 0;
-
-const fileFilters = [{
-  name: 'JSON file',
-  extensions: ['json']
-}];
-
-const saveFile = (text: string) => {
- 
-  const filePath = dialog.showSaveDialog(mainWindow, {
-    filters: fileFilters
-  });
-  if(!filePath) {
-    return;
-  }
-
-  fs.writeFileSync(filePath, text);
-};
-
-
-let saveTableLock = false;
-const saveTable = () => {
-  if(saveTableLock) {
-    return;
-  }
-  console.log('Arrived');
-  saveTableLock = true;
-  mainWindow.webContents.send('save-data');
-
-  const currentOp = operationsCounter;
-
-  ipcMain.on('save-data', (event: IpcMessageEvent, msg: string) => {
-    if(currentOp !== operationsCounter) {
-      return;
-    }
-    console.log('save-data event');
-    saveFile(msg);
-    saveTableLock = false;
-    operationsCounter++;
-  });
-}
-
-let openFileLock = false;
-const openTable = () => {
-  if(openFileLock) {
-    return;
-  }
-  openFileLock = true;
-
-  const filePath = dialog.showOpenDialog(mainWindow, {
-    filters: fileFilters
-  });
-  if(!filePath) {
-    openFileLock = true;
-    return;
-  }
-
-  fs.readFile(filePath[0], {}, (err, data) => {
-    if(err) {
-      dialog.showErrorBox('Failed to open file', err.message);
-      openFileLock = false;
-      return;
-    }
-
-    mainWindow.webContents.send('load-data', data.toString());
-    openFileLock = false;
-  });
-}
+let fileManager: FileManager;
 
 const menuTemplate = [
   {
@@ -81,13 +14,13 @@ const menuTemplate = [
       {
         label: 'Зберегти як...',
         click() {
-          saveTable();
+          fileManager.saveTable();
         }   
       },
       {
         label: 'Відкрити...',
         click() {
-          openTable();
+          fileManager.loadTable();
         }
       },
       {
@@ -104,6 +37,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({ width: 900, height: 680 ,  webPreferences : {
         nodeIntegration: true,
       } });
+    fileManager = new FileManager(mainWindow);
     mainWindow.loadURL(
         isDev
             ? "http://localhost:3000"
@@ -113,10 +47,6 @@ function createWindow() {
 
     const menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
-
-    ipcMain.on('channel' , (event : IpcMessageEvent , msg: string)=>{
-        
-    })
 
     ipcMain.on('error', (event : IpcMessageEvent , msg: string)=>{
         dialog.showErrorBox('Error', msg);
