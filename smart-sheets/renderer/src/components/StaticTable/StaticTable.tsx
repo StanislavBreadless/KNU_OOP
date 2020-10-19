@@ -4,8 +4,13 @@ import React from 'react';
 import { getNextKey } from '../../helpers/utils';
 
 import { TableManager } from '../../table-manager/TableManager';
-
+import { IpcRenderer, IpcMessageEvent} from 'electron' ; 
 import './StaticTable.css';
+
+const electron  = window.require('electron') ;  // require electron like this in all the files. Don't Use import from 'electron' syntax for importing IpcRender from electron.
+
+let ipcRenderer : IpcRenderer  = electron.ipcRenderer ; 
+
 
 type StaticTableProps = {
   colNumber: number,
@@ -102,6 +107,12 @@ class StaticTable extends React.Component<StaticTableProps> {
     this.setInput = this.setInput.bind(this);
     this.updateLocalState = this.updateLocalState.bind(this);
     this.startEdit = this.startEdit.bind(this);
+
+    
+    ipcRenderer.on('save-data', () => {
+      ipcRenderer.send('save-data', this.tableManager.serialize());
+    });
+
   }
 
   updateLocalState(id: string, value: string) {
