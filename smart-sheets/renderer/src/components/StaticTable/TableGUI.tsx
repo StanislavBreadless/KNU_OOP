@@ -5,7 +5,7 @@ import { getNextKey } from '../../helpers/utils';
 
 import { TableManager } from '../../table-manager/TableManager';
 import { IpcRenderer, IpcMessageEvent} from 'electron' ; 
-import './StaticTable.css';
+import './TableGUI.css';
 import { couldStartTrivia } from 'typescript';
 
 const electron  = window.require('electron') ;  // require electron like this in all the files. Don't Use import from 'electron' syntax for importing IpcRender from electron.

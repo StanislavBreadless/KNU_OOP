@@ -67,5 +67,5 @@ td:focus-within {
   border: 2px solid lightblue;
 
   position: relative;
-  z-index: 100;
+  /* z-index: 100; */
 }
