@@ -7,8 +7,16 @@ let mainWindow : BrowserWindow ;
 
 let operationsCounter = 0;
 
+const fileFilters = [{
+  name: 'JSON file',
+  extensions: ['json']
+}];
+
 const saveFile = (text: string) => {
-  const filePath = dialog.showSaveDialog(mainWindow, {});
+ 
+  const filePath = dialog.showSaveDialog(mainWindow, {
+    filters: fileFilters
+  });
   if(!filePath) {
     return;
   }
@@ -46,7 +54,9 @@ const openTable = () => {
   }
   openFileLock = true;
 
-  const filePath = dialog.showOpenDialog(mainWindow, {});
+  const filePath = dialog.showOpenDialog(mainWindow, {
+    filters: fileFilters
+  });
   if(!filePath) {
     openFileLock = true;
     return;
