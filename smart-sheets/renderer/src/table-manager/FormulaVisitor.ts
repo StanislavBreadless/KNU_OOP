@@ -3,16 +3,12 @@
 import { 
   LabCalculatorVisitor,
 } from '../grammar/LabCalculatorVisitor';
-import { ParenthesizedExprContext } from "../grammar/LabCalculatorParser";
-import { ExponentialExprContext } from "../grammar/LabCalculatorParser";
+import { AdditiveUnaryExprContext, ParenthesizedExprContext } from "../grammar/LabCalculatorParser";
 import { MultiplicativeExprContext } from "../grammar/LabCalculatorParser";
 import { AdditiveExprContext } from "../grammar/LabCalculatorParser";
 import { NumberExprContext } from "../grammar/LabCalculatorParser";
 import { IdentifierExprContext } from "../grammar/LabCalculatorParser";
-import { CompileUnitContext } from "../grammar/LabCalculatorParser";
 import { ExpressionContext } from "../grammar/LabCalculatorParser";
-import { ParseTree } from 'antlr4ts/tree';
-import { resolve } from 'dns';
 
 import { WRONG_FORMAT } from './Constants';
 
@@ -102,6 +98,24 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     }
 
     throw new Error(WRONG_FORMAT);
+  }
+
+  visitAdditiveUnaryExpr = (ctx: AdditiveUnaryExprContext): number => {
+    this.visitChildren(ctx);
+
+    const add = ctx.ADD();
+    const expr = ctx.expression();
+    const value = this.visit(expr);
+
+    if(!isFinite(value)) {
+      throw new Error(WRONG_FORMAT);
+    }
+
+    if(add) {
+      return +value;
+    } else {
+      return -value;
+    }
   }
 
   visitParenthesizedExpr = (ext: ParenthesizedExprContext): number => {

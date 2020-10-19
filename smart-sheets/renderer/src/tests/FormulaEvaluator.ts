@@ -60,6 +60,30 @@ describe('FormulaEvaluator', () => {
     ).to.equal('39');
   });
 
+  it('Unary plus', () => {
+    const formula = '+ a1';
+
+    const resolver = (variable: string) => {
+      return variable === 'a1' ? '-12' : '13';
+    }
+
+    expect(
+      evaluator.evaluate(formula, resolver)
+    ).to.equal('-12');
+  });
+
+  it('Unary minus', () => {
+    const formula = '- a1';
+
+    const resolver = (variable: string) => {
+      return variable === 'a1' ? '-12' : '13';
+    }
+
+    expect(
+      evaluator.evaluate(formula, resolver)
+    ).to.equal('12');
+  });
+
   it('Mutliplicative expression', () => {
     const values = {
       "a10": '12',
@@ -143,6 +167,5 @@ describe('FormulaEvaluator', () => {
       (+evaluator.evaluate(formula, resolver)).toFixed(6)
     ).to.equal('-26.200000');
   });
-
 
 });
