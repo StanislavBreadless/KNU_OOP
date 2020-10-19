@@ -20,9 +20,46 @@ interface ValuesObject {
 const cellRegex = /([a-zA-Z]+)([0-9]+)/;
 
 export class TableManager {
+  public static fromSerialization(serialization: string): TableManager {
+    const tableManager = new TableManager();
 
-  private values: Map<string, Cell>;
-  private evaluator: FormulaEvaluator;
+    const obj = JSON.parse(serialization);
+    if(!obj || !obj.cells) {
+      throw new Error(Constants.INVALID_SERIALIZATION);
+    }
+
+    const tableSerializationObject = obj as TableSerialization;
+
+    tableSerializationObject.cells.forEach((cell) => {
+      const tableCell = new Cell(cell.row, cell.column, cell.id);
+
+      tableManager.values.set(cell.key, tableCell);
+
+      tableManager.setCell(cell.id, cell.rawValue);
+    });
+
+    return tableManager;
+  }
+
+  public serialize(): string {
+    const cells: Array<CellSerialization> = [];
+
+    this.values.forEach((cell, key) => {
+      cells.push({
+        rawValue: cell.getRawValue(),
+        row: cell.getRow(),
+        column: cell.getColumn(),
+        id: cell.getId(),
+        key: key
+      });
+    });
+
+    const serializationObj: TableSerialization =  {
+      cells
+    };
+
+    return JSON.stringify(serializationObj);
+  } 
 
   getCell(cellId: string): Cell {
     const id = cellId.toUpperCase();
@@ -65,6 +102,12 @@ export class TableManager {
 
   getCellRawValue(id: string): string {
     return this.getCell(id).getRawValue();
+  }
+
+  setCell(cellId: string, value: string) {
+    const id = cellId.toUpperCase();
+    this.setIndividualCell(id, value);
+    this.updateAllCells();
   }
 
   private updateAllCells() {
@@ -115,12 +158,6 @@ export class TableManager {
 
       cell.setValue(newValue);
     }
-  }
-
-  setCell(cellId: string, value: string) {
-    const id = cellId.toUpperCase();
-    this.setIndividualCell(id, value);
-    this.updateAllCells();
   }
 
   private checkCycle(cell: Cell, rootCellId: string, depth: number = 1) {
@@ -174,44 +211,6 @@ export class TableManager {
     this.evaluator = new FormulaEvaluator();
   } 
 
-  public static fromSerialization(serialization: string): TableManager {
-    const tableManager = new TableManager();
-
-    const obj = JSON.parse(serialization);
-    if(!obj || !obj.cells) {
-      throw new Error(Constants.INVALID_SERIALIZATION);
-    }
-
-    const tableSerializationObject = obj as TableSerialization;
-
-    tableSerializationObject.cells.forEach((cell) => {
-      const tableCell = new Cell(cell.row, cell.column, cell.id);
-
-      tableManager.values.set(cell.key, tableCell);
-
-      tableManager.setCell(cell.id, cell.rawValue);
-    });
-
-    return tableManager;
-  }
-
-  public serialize(): string {
-    const cells: Array<CellSerialization> = [];
-
-    this.values.forEach((cell, key) => {
-      cells.push({
-        rawValue: cell.getRawValue(),
-        row: cell.getRow(),
-        column: cell.getColumn(),
-        id: cell.getId(),
-        key: key
-      });
-    });
-
-    const serializationObj: TableSerialization =  {
-      cells
-    };
-
-    return JSON.stringify(serializationObj);
-  } 
+  private values: Map<string, Cell>;
+  private evaluator: FormulaEvaluator;
 }

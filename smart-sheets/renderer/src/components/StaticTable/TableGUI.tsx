@@ -128,13 +128,13 @@ class TableGUI extends React.Component<ITableGUIProps, ITableGUIState> {
 
   }
 
-  updateLocalState(id: string, value: string) {
+  private updateLocalState(id: string, value: string) {
     this.setState({
       [id]: value
     });
   }
 
-  resetState() {
+  private resetState() {
     const newState = {...this.state};
     Object.keys(newState).forEach((key) => {
       // @ts-ignore
@@ -143,16 +143,16 @@ class TableGUI extends React.Component<ITableGUIProps, ITableGUIState> {
     this.setState(newState);
   }
 
-  applyTableChanges() {
+  private applyTableChanges() {
     this.setState(this.tableManager.getCellsValuesObject());
   }
 
-  setInput(id: string, value: string) {
+  private setInput(id: string, value: string) {
     this.tableManager.setCell(id, value);
     this.applyTableChanges();
   }
 
-  startEdit(id: string) {
+  private startEdit(id: string) {
     const rawValue = this.tableManager.getCellRawValue(id);
 
     this.setState({
