@@ -29,18 +29,15 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     return aggregate + nextResult;
   }
 
-  // @ts-ignore 
-  visitIdentifierExpr(ctx: IdentifierExprContext): number {
+  visitIdentifierExpr = (ctx: IdentifierExprContext): number => {
     return this.variableResolver(ctx.text);
   }
 
-  // @ts-ignore
-  visitExpression(ctx: ExpressionContext): number {
+  visitExpression = (ctx: ExpressionContext): number => {
     return this.visitChildren(ctx);
   }
 
-  // @ts-ignore
-  visitNumberExpr(ctx: NumberExprContext): number {
+  visitNumberExpr = (ctx: NumberExprContext): number => {
     const result = +ctx.text;
 
     if(!isFinite(result)) {
@@ -50,8 +47,7 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     return result;
   }
 
-  // @ts-ignore
-  visitAdditiveExpr(ctx: AdditiveExprContext): number {
+  visitAdditiveExpr = (ctx: AdditiveExprContext): number => {
     this.visitChildren(ctx);
 
     const leftExpr = ctx.expression(0);
@@ -74,8 +70,7 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     }
   }
 
-  // @ts-ignore 
-  visitMultiplicativeExpr(ctx: MultiplicativeExprContext): number {
+  visitMultiplicativeExpr = (ctx: MultiplicativeExprContext): number => {
     this.visitChildren(ctx);
 
     const leftExpr = ctx.expression(0);
@@ -109,8 +104,7 @@ export class FormulaVisitor extends LabCalculatorVisitor<number> {
     throw new Error(WRONG_FORMAT);
   }
 
-  // @ts-ignore
-  visitParenthesizedExpr(ext: ParenthesizedExprContext): number {
+  visitParenthesizedExpr = (ext: ParenthesizedExprContext): number => {
     return this.visitChildren(ext);
   }
 }

@@ -17,6 +17,10 @@ interface TableSerialization {
   cells: Array<CellSerialization>
 }
 
+interface ValuesObject {
+  [key: string]: string
+}
+
 const cellRegex = /([a-zA-Z]+)([0-9]+)/;
 
 export class TableManager {
@@ -49,6 +53,16 @@ export class TableManager {
     return cell;
   }
   
+  getCellsValuesObject(): ValuesObject {
+    const result: ValuesObject = {};
+
+    this.values.forEach((cell, key) => {
+      result[key] = cell.getValue();
+    });
+
+    return result;
+  }
+
   getCellValue(id: string): string {
     return this.getCell(id).getValue();
   }

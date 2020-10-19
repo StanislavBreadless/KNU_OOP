@@ -36,6 +36,14 @@ describe('TableManager', () => {
     expect(tableManager.getCellRawValue('A10')).to.equal('=5');
   });
 
+  it('Upper case', () => {
+    const tableManager = new TableManager();
+
+    tableManager.setCell('A0', '=12');
+    expect(tableManager.getCellValue('A0')).to.equal('12');
+    expect(tableManager.getCellRawValue('A0')).to.equal('=12');
+  });
+
   it('Arithmetic evaluation', () => {
     const tableManager = new TableManager();
 

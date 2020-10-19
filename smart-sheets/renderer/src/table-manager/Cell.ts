@@ -1,5 +1,3 @@
-
-
 export class Cell {
   private value: string;
   private rawValue: string;
