@@ -74,7 +74,7 @@ describe('FormulaEvaluator', () => {
     ).to.equal('-12');
   });
 
-  it('Unary minus', () => {
+  it('Unary minus basic', () => {
     const formula = '- a1';
 
     const resolver = (variable: string) => {
@@ -84,6 +84,18 @@ describe('FormulaEvaluator', () => {
     expect(
       evaluator.evaluate(formula, resolver)
     ).to.equal('12');
+  });
+
+  it('Unary minus with precedence', () => {
+    const formula = '-3 + 19';
+
+    const resolver = (variable: string) => {
+      return variable === 'a1' ? '-12' : '13';
+    }
+
+    expect(
+      evaluator.evaluate(formula, resolver)
+    ).to.equal('16');
   });
 
   it('Exponentiation', () => {

@@ -6,14 +6,14 @@ import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 import { ParenthesizedExprContext } from "./LabCalculatorParser";
 import { ExponentialExprContext } from "./LabCalculatorParser";
 import { MultiplicativeExprContext } from "./LabCalculatorParser";
-import { AdditiveExprContext } from "./LabCalculatorParser";
 import { AdditiveUnaryExprContext } from "./LabCalculatorParser";
+import { AdditiveExprContext } from "./LabCalculatorParser";
 import { NumberExprContext } from "./LabCalculatorParser";
 import { IdentifierExprContext } from "./LabCalculatorParser";
 import { CompileUnitContext } from "./LabCalculatorParser";
 import { ExpressionContext } from "./LabCalculatorParser";
 
-import {AbstractParseTreeVisitor} from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 
 
 /**
@@ -49,20 +49,20 @@ export abstract class LabCalculatorVisitor<Result> extends AbstractParseTreeVisi
 	visitMultiplicativeExpr?: (ctx: MultiplicativeExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `AdditiveExpr`
-	 * labeled alternative in `LabCalculatorParser.expression`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitAdditiveExpr?: (ctx: AdditiveExprContext) => Result;
-
-	/**
 	 * Visit a parse tree produced by the `AdditiveUnaryExpr`
 	 * labeled alternative in `LabCalculatorParser.expression`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitAdditiveUnaryExpr?: (ctx: AdditiveUnaryExprContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by the `AdditiveExpr`
+	 * labeled alternative in `LabCalculatorParser.expression`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAdditiveExpr?: (ctx: AdditiveExprContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by the `NumberExpr`

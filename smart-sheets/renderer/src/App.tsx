@@ -14,9 +14,9 @@ ipcRenderer.on('response' , (event:IpcMessageEvent , args:any)=>{
 const App: React.FC = () => {
   return (
     <div className="App">
-      <div className="input-header">
+      {/* <div className="input-header">
         <input className=''></input> 
-      </div>
+      </div> */}
       <div className="table-wrapper">
         <StaticTable 
           colNumber={Constants.TABLE_WIDTH} 

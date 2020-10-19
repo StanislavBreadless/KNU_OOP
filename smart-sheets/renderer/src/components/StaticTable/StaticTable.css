@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 
 .main-table {
   /* position: absolute; */
@@ -60,5 +63,9 @@ td {
 }
 
 td:focus-within {
-  outline: 2px solid lightblue;
+  padding: 2px;
+  border: 2px solid lightblue;
+
+  position: relative;
+  z-index: 100;
 }

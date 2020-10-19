@@ -163,7 +163,7 @@ export class LabCalculatorParser extends Parser {
 					this.consume();
 				}
 				this.state = 13;
-				this.expression(3);
+				this.expression(4);
 				}
 				break;
 			case LabCalculatorParser.NUMBER:
@@ -247,8 +247,8 @@ export class LabCalculatorParser extends Parser {
 						_localctx = new AdditiveExprContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, LabCalculatorParser.RULE_expression);
 						this.state = 24;
-						if (!(this.precpred(this._ctx, 4))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 4)");
+						if (!(this.precpred(this._ctx, 3))) {
+							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
 						}
 						this.state = 25;
 						(_localctx as AdditiveExprContext)._operatorToken = this._input.LT(1);
@@ -264,7 +264,7 @@ export class LabCalculatorParser extends Parser {
 							this.consume();
 						}
 						this.state = 26;
-						this.expression(5);
+						this.expression(4);
 						}
 						break;
 					}
@@ -307,7 +307,7 @@ export class LabCalculatorParser extends Parser {
 			return this.precpred(this._ctx, 5);
 
 		case 2:
-			return this.precpred(this._ctx, 4);
+			return this.precpred(this._ctx, 3);
 		}
 		return true;
 	}
@@ -322,12 +322,12 @@ export class LabCalculatorParser extends Parser {
 		"\x02\x04\x12\x03\x02\x02\x02\x06\x07\x05\x04\x03\x02\x07\b\x07\x02\x02" +
 		"\x03\b\x03\x03\x02\x02\x02\t\n\b\x03\x01\x02\n\v\x07\r\x02\x02\v\f\x05" +
 		"\x04\x03\x02\f\r\x07\x0E\x02\x02\r\x13\x03\x02\x02\x02\x0E\x0F\t\x02\x02" +
-		"\x02\x0F\x13\x05\x04\x03\x05\x10\x13\x07\x03\x02\x02\x11\x13\x07\x04\x02" +
+		"\x02\x0F\x13\x05\x04\x03\x06\x10\x13\x07\x03\x02\x02\x11\x13\x07\x04\x02" +
 		"\x02\x12\t\x03\x02\x02\x02\x12\x0E\x03\x02\x02\x02\x12\x10\x03\x02\x02" +
 		"\x02\x12\x11\x03\x02\x02\x02\x13\x1F\x03\x02\x02\x02\x14\x15\f\b\x02\x02" +
 		"\x15\x16\x07\x06\x02\x02\x16\x1E\x05\x04\x03\t\x17\x18\f\x07\x02\x02\x18" +
-		"\x19\t\x03\x02\x02\x19\x1E\x05\x04\x03\b\x1A\x1B\f\x06\x02\x02\x1B\x1C" +
-		"\t\x02\x02\x02\x1C\x1E\x05\x04\x03\x07\x1D\x14\x03\x02\x02\x02\x1D\x17" +
+		"\x19\t\x03\x02\x02\x19\x1E\x05\x04\x03\b\x1A\x1B\f\x05\x02\x02\x1B\x1C" +
+		"\t\x02\x02\x02\x1C\x1E\x05\x04\x03\x06\x1D\x14\x03\x02\x02\x02\x1D\x17" +
 		"\x03\x02\x02\x02\x1D\x1A\x03\x02\x02\x02\x1E!\x03\x02\x02\x02\x1F\x1D" +
 		"\x03\x02\x02\x02\x1F \x03\x02\x02\x02 \x05\x03\x02\x02\x02!\x1F\x03\x02" +
 		"\x02\x02\x05\x12\x1D\x1F";
@@ -382,7 +382,7 @@ export class ExpressionContext extends ParserRuleContext {
 	}
 	// @Override
   // @ts-ignore
-	public get ruleIndex(): number { return LabCalculatorParser.RULE_expression; }
+  public get ruleIndex(): number { return LabCalculatorParser.RULE_expression; }
 	public copyFrom(ctx: ExpressionContext): void {
 		super.copyFrom(ctx);
 	}
@@ -454,7 +454,6 @@ export class ExponentialExprContext extends ExpressionContext {
 		}
 	}
 }
-// @ts-ignore
 export class MultiplicativeExprContext extends ExpressionContext {
   // @ts-ignore
 	public _operatorToken: Token;
@@ -496,7 +495,39 @@ export class MultiplicativeExprContext extends ExpressionContext {
 		}
 	}
 }
-// @ts-ignore
+export class AdditiveUnaryExprContext extends ExpressionContext {
+  // @ts-ignore
+	public _operatorToken: Token;
+	public expression(): ExpressionContext {
+		return this.getRuleContext(0, ExpressionContext);
+	}
+	public ADD(): TerminalNode | undefined { return this.tryGetToken(LabCalculatorParser.ADD, 0); }
+	public SUBTRACT(): TerminalNode | undefined { return this.tryGetToken(LabCalculatorParser.SUBTRACT, 0); }
+	constructor(ctx: ExpressionContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: LabCalculatorListener): void {
+		if (listener.enterAdditiveUnaryExpr) {
+			listener.enterAdditiveUnaryExpr(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: LabCalculatorListener): void {
+		if (listener.exitAdditiveUnaryExpr) {
+			listener.exitAdditiveUnaryExpr(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: LabCalculatorVisitor<Result>): Result {
+		if (visitor.visitAdditiveUnaryExpr) {
+			return visitor.visitAdditiveUnaryExpr(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
 export class AdditiveExprContext extends ExpressionContext {
   // @ts-ignore
 	public _operatorToken: Token;
@@ -531,39 +562,6 @@ export class AdditiveExprContext extends ExpressionContext {
 	public accept<Result>(visitor: LabCalculatorVisitor<Result>): Result {
 		if (visitor.visitAdditiveExpr) {
 			return visitor.visitAdditiveExpr(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-export class AdditiveUnaryExprContext extends ExpressionContext {
-  // @ts-ignore
-	public _operatorToken: Token;
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
-	}
-	public ADD(): TerminalNode | undefined { return this.tryGetToken(LabCalculatorParser.ADD, 0); }
-	public SUBTRACT(): TerminalNode | undefined { return this.tryGetToken(LabCalculatorParser.SUBTRACT, 0); }
-	constructor(ctx: ExpressionContext) {
-		super(ctx.parent, ctx.invokingState);
-		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: LabCalculatorListener): void {
-		if (listener.enterAdditiveUnaryExpr) {
-			listener.enterAdditiveUnaryExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: LabCalculatorListener): void {
-		if (listener.exitAdditiveUnaryExpr) {
-			listener.exitAdditiveUnaryExpr(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: LabCalculatorVisitor<Result>): Result {
-		if (visitor.visitAdditiveUnaryExpr) {
-			return visitor.visitAdditiveUnaryExpr(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
