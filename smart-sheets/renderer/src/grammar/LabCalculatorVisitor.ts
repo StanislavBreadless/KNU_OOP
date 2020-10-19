@@ -13,7 +13,8 @@ import { IdentifierExprContext } from "./LabCalculatorParser";
 import { CompileUnitContext } from "./LabCalculatorParser";
 import { ExpressionContext } from "./LabCalculatorParser";
 
-import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
+import {AbstractParseTreeVisitor} from 'antlr4ts/tree/AbstractParseTreeVisitor';
+
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced

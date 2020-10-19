@@ -24,6 +24,30 @@ describe('FormulaEvaluator', () => {
     ).to.equal('123');
   });
 
+  it('Resolving two-sign variable', () => {
+    const formula = 'a1';
+
+    const resolver = (variable: string) => {
+      return variable === 'a1' ? '123' : '321';
+    }
+
+    expect(
+      evaluator.evaluate(formula, resolver)
+    ).to.equal('123');
+  });
+
+  it('Resolving one variable', () => {
+    const formula = 'a10';
+
+    const resolver = (variable: string) => {
+      return variable === 'a10' ? '123' : '321';
+    }
+
+    expect(
+      evaluator.evaluate(formula, resolver)
+    ).to.equal('123');
+  });
+
   it('Additive expression', () => {
     const formula = 'a10 + b12 - 5';
 

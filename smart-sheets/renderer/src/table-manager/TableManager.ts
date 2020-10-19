@@ -17,6 +17,8 @@ interface TableSerialization {
   cells: Array<CellSerialization>
 }
 
+const cellRegex = /([a-zA-Z]+)([0-9]+)/;
+
 export class TableManager {
 
   private values: Map<string, Cell>;
@@ -26,7 +28,6 @@ export class TableManager {
     const cell = this.values.get(id);
 
     if (!cell) {
-      const cellRegex = /([a-zA-Z]+)([0-9]+)/;
       const regResult = cellRegex.exec(id);
 
       if (!regResult) {
@@ -85,15 +86,13 @@ export class TableManager {
     const plainTextMode = !value.startsWith('=');
 
     if (plainTextMode) {
-      const formula = value;
-      const newValue = this.evaluateCell(cell, formula);
+      cell.clearDependecies();
+      const formula = value.trim();
 
-      if(isFinite(+newValue) && newValue.length > 5) {
-        cell.setValue((+newValue).toFixed(2));
-      } else if (isFinite(+newValue)) {
-        cell.setValue(newValue);
+      if(formula.trim() !== '' && isFinite(+formula) && formula.length > 5) {
+        cell.setValue((+formula).toFixed(2));
       } else {
-        cell.setValue(value);
+        cell.setValue(formula.trim());
       }
     } else {
       const formula = value.slice(1);
@@ -130,17 +129,18 @@ export class TableManager {
     cell.clearDependecies();
 
     const cellId = cell.getId();
-    const regex = /[a-zA-z]+[0-9]+/;
     const evaluatedValue = this.evaluator.evaluate(
       formula,
       (variable: string) => {
-
         const varCell = this.getCell(variable);
 
         cell.addDependecy(varCell.getId());
 
         const value = varCell.getValue();
-        if(!isFinite(+value) && varCell.getId() !== cellId) {
+        if(!isFinite(+value) 
+            && varCell.getId() !== cellId
+            && varCell.getRawValue() !== value
+          ) {
           return '0';
         }
 

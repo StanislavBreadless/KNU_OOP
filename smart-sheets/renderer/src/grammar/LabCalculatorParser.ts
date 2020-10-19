@@ -380,7 +380,7 @@ export class ExpressionContext extends ParserRuleContext {
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
-  // @Override
+	// @Override
   // @ts-ignore
 	public get ruleIndex(): number { return LabCalculatorParser.RULE_expression; }
 	public copyFrom(ctx: ExpressionContext): void {
@@ -454,6 +454,7 @@ export class ExponentialExprContext extends ExpressionContext {
 		}
 	}
 }
+// @ts-ignore
 export class MultiplicativeExprContext extends ExpressionContext {
   // @ts-ignore
 	public _operatorToken: Token;
@@ -495,8 +496,9 @@ export class MultiplicativeExprContext extends ExpressionContext {
 		}
 	}
 }
+// @ts-ignore
 export class AdditiveExprContext extends ExpressionContext {
-  //@ts-ignore
+  // @ts-ignore
 	public _operatorToken: Token;
 	public expression(): ExpressionContext[];
 	public expression(i: number): ExpressionContext;
@@ -535,7 +537,7 @@ export class AdditiveExprContext extends ExpressionContext {
 	}
 }
 export class AdditiveUnaryExprContext extends ExpressionContext {
-  //@ts-ignore
+  // @ts-ignore
 	public _operatorToken: Token;
 	public expression(): ExpressionContext {
 		return this.getRuleContext(0, ExpressionContext);

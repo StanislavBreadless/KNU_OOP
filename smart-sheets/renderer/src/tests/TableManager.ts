@@ -85,24 +85,24 @@ describe('TableManager', () => {
   it('Cell long reference chains', () => {
     const tableManager = new TableManager();
 
-    tableManager.setCell('d10', '12');
+    tableManager.setCell('d2', '12');
     tableManager.setCell('c10', '= 2 * 9 / 5');
-    tableManager.setCell('b10', '= c10 + d10');
-    tableManager.setCell('a10', '= b10 * c10 + c10 + d10');
+    tableManager.setCell('b10', '= c10 + d2');
+    tableManager.setCell('aa1', '= b10 * c10 + c10 + d2');
 
-    expect(+tableManager.getCellValue('d10')).to.be.closeTo(12, allowedPrecision);
+    expect(+tableManager.getCellValue('d2')).to.be.closeTo(12, allowedPrecision);
     expect(+tableManager.getCellValue('c10')).to.be.closeTo(3.6, allowedPrecision);
     expect(+tableManager.getCellValue('b10')).to.be.closeTo(15.6, allowedPrecision);
-    expect(+tableManager.getCellValue('a10')).to.be.closeTo(71.76, allowedPrecision);
+    expect(+tableManager.getCellValue('aa1')).to.be.closeTo(71.76, allowedPrecision);
 
     
-    tableManager.setCell('d10', '10');
+    tableManager.setCell('d2', '10');
     tableManager.setCell('c10', '= 2 * 9 mod 9');
 
-    expect(+tableManager.getCellValue('d10')).to.be.closeTo(10, allowedPrecision);
+    expect(+tableManager.getCellValue('d2')).to.be.closeTo(10, allowedPrecision);
     expect(+tableManager.getCellValue('c10')).to.be.closeTo(0, allowedPrecision);
     expect(+tableManager.getCellValue('b10')).to.be.closeTo(10, allowedPrecision);
-    expect(+tableManager.getCellValue('a10')).to.be.closeTo(10, allowedPrecision);
+    expect(+tableManager.getCellValue('aa1')).to.be.closeTo(10, allowedPrecision);
   });
 
   it('Save & load', () => {
