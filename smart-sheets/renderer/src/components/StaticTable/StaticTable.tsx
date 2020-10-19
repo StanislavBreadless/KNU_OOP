@@ -122,6 +122,7 @@ class StaticTable extends React.Component<StaticTableProps> {
         }
 
         this.tableManager = newManager;
+        this.resetState();
         this.applyTableChanges();
       } catch(err)  {
         ipcRenderer.send('error', err.message);
@@ -135,6 +136,15 @@ class StaticTable extends React.Component<StaticTableProps> {
     this.setState({
       [id]: value
     });
+  }
+
+  resetState() {
+    const newState = {...this.state};
+    Object.keys(newState).forEach((key) => {
+      // @ts-ignore
+      newState[key] = undefined;
+    });
+    this.setState(newState);
   }
 
   applyTableChanges() {

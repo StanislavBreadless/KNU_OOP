@@ -5,41 +5,37 @@ import * as fs from 'fs';
 
 let mainWindow : BrowserWindow ;
 
+let operationsCounter = 0;
+
 const saveFile = (text: string) => {
   const filePath = dialog.showSaveDialog(mainWindow, {});
   if(!filePath) {
     return;
   }
 
-  fs.writeFile(filePath, text, (err) => {
-    if(err) {
-      dialog.showErrorBox('Failed saving file', err.message);
-    }
-    dialog.showMessageBox(mainWindow, {
-      title: 'Saving file',
-      message: 'File saved successfuly!'
-    }, () => {});
-  });
+  fs.writeFileSync(filePath, text);
 };
 
-
-const openFile = (data: string) => {
- 
-
-  mainWindow.webContents.send('load-data', data);
-} 
 
 let saveTableLock = false;
 const saveTable = () => {
   if(saveTableLock) {
     return;
   }
+  console.log('Arrived');
   saveTableLock = true;
   mainWindow.webContents.send('save-data');
 
+  const currentOp = operationsCounter;
+
   ipcMain.on('save-data', (event: IpcMessageEvent, msg: string) => {
+    if(currentOp !== operationsCounter) {
+      return;
+    }
+    console.log('save-data event');
     saveFile(msg);
     saveTableLock = false;
+    operationsCounter++;
   });
 }
 
@@ -64,6 +60,7 @@ const openTable = () => {
     }
 
     mainWindow.webContents.send('load-data', data.toString());
+    openFileLock = false;
   });
 }
 
