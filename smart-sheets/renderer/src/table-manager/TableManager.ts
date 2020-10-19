@@ -24,7 +24,8 @@ export class TableManager {
   private values: Map<string, Cell>;
   private evaluator: FormulaEvaluator;
 
-  getCell(id: string): Cell {
+  getCell(cellId: string): Cell {
+    const id = cellId.toUpperCase();
     const cell = this.values.get(id);
 
     if (!cell) {
@@ -107,7 +108,8 @@ export class TableManager {
   }
 
   setCell(cellId: string, value: string) {
-    this.setIndividualCell(cellId, value);
+    const id = cellId.toUpperCase();
+    this.setIndividualCell(id, value);
     this.updateAllCells();
   }
 

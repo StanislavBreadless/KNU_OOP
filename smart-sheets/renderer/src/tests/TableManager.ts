@@ -28,6 +28,14 @@ describe('TableManager', () => {
     expect(tableManager.getCellRawValue('a10')).to.equal('=5');
   });
 
+  it('Case-insensitive', () => {
+    const tableManager = new TableManager();
+
+    tableManager.setCell('a10', '=5');
+    expect(tableManager.getCellValue('A10')).to.equal('5');
+    expect(tableManager.getCellRawValue('A10')).to.equal('=5');
+  });
+
   it('Arithmetic evaluation', () => {
     const tableManager = new TableManager();
 
