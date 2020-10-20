@@ -49,6 +49,8 @@ tbody tr td:first-of-type {
   position: sticky;
   left: -1px;
   padding: 10px 15px;
+
+  z-index: 3;
 }
 
 td {
