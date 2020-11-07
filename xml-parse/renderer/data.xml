@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <item>
+    <name>Jeff Bezos</name>
+    <worth>113000000000</worth>
+    <country>United States</country>
+    <source>Amazon</source>
+    <age>56</age>
+    <industry>Technology</industry>
+  </item>
+  <item>
+    <name>Bill Gates</name>
+    <worth>98000000000</worth>
+    <country>United States</country>
+    <source>Microsoft</source>
+    <age>64</age>
+    <industry>Technology</industry>
+  </item>
+  <item>
+    <name>Bernard Arnault</name>
+    <worth>76000000000</worth>
+    <country>France</country>
+    <source>LVMH</source>
+    <age>71</age>
+    <industry>Fashion</industry>
+  </item>
+  <item>
+    <name>Warren Buffett</name>
+    <worth>67500000000</worth>
+    <country>United States</country>
+    <source>Berkshire Hathaway</source>
+    <age>89</age>
+    <industry>Finance</industry>
+  </item>
+  <item>
+    <name>Larry Ellison</name>
+    <worth>59000000000</worth>
+    <country>United States</country>
+    <source>Oracle</source>
+    <age>75</age>
+    <industry>Technology</industry>
+  </item>
+  <item>
+    <name>Amancio Ortega</name>
+    <worth>55100000000</worth>
+    <country>Spain</country>
+    <source>Zara</source>
+    <age>84</age>
+    <industry>Fashion</industry>
+  </item>
+</root>

@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@types/xmldom": "^0.1.30",
-    "antlr4ts": "^0.5.0-alpha.3",
     "electron-is-dev": "^1.1.0",
     "esm": "^3.2.25",
     "mocha": "^8.2.0",
