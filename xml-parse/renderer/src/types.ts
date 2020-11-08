@@ -3,6 +3,7 @@ export interface PersonData {
   worth: number;
   age: number;
   source: string;
+  country: string;
   industry: string;
 }
 
@@ -21,7 +22,8 @@ export function isPersonData(variable: any): variable is PersonData {
     && isNumber(variable.worth)
     && isNumber(variable.age)
     && isString(variable.source)
-    && isString(variable.industry);
+    && isString(variable.industry)
+    && isString(variable.country);
 }
 
 export const personDataObjectModel = {
@@ -29,5 +31,19 @@ export const personDataObjectModel = {
   'worth': 'number',
   'age': 'number',
   'source': 'string',
+  'country': 'string',
   'industry': 'string'
+}
+
+export type ParserType = "SAX" | "DOM";
+
+export interface DataSearchFilters {
+  minAge?: number;
+  maxAge?: number;
+  minWorth?: number;
+  maxWorth?: number;
+  name?: string;
+  country?: string;
+  industry?: string;
+  source?: string;
 }

@@ -1,4 +1,4 @@
-import { IXMLParser } from './AbstractXMLParser';
+import { IXMLParser } from './IXMLParser';
 import { PersonData, isPersonData } from '../types';
 /* @ts-ignore */
 import * as xml from 'sax-parser';

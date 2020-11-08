@@ -1,4 +1,4 @@
-import { IXMLParser as IXMLParser } from './AbstractXMLParser';
+import { IXMLParser as IXMLParser } from './IXMLParser';
 import { PersonData } from '../types';
 import { INVALID_DATA } from '../constants/constants';
 
@@ -38,13 +38,15 @@ export class DomXMLParser implements IXMLParser {
     const age = this.parseNumberRecord(domNode, 'age');
     const source = this.parseStringRecord(domNode, 'source');
     const industry = this.parseStringRecord(domNode, 'industry');
+    const country = this.parseStringRecord(domNode, 'country');
 
     return {
       name,
       worth,
       age,
       source,
-      industry
+      industry,
+      country
     };
   }
 
