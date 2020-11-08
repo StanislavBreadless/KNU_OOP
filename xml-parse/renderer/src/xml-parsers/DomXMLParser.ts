@@ -54,6 +54,6 @@ export class DomXMLParser implements IXMLParser {
     const xmlDoc = this.parser.parseFromString(str, "text/xml");
     const items = Array.from(xmlDoc.querySelectorAll('item'));
 
-    return items.map(this.parseItem);
+    return items.map((item) => this.parseItem(item));
   } 
 }

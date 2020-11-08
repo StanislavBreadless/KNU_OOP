@@ -9,6 +9,8 @@ import { DomXMLParser } from './xml-parsers/DomXMLParser';
 import { SaxXMLParser } from './xml-parsers/SaxXMLParser';
 import { DataSearchFilters, ParserType, PersonData } from './types';
 
+import { FILE_REQUEST_MSG, FILE_RESPONSE_MSG} from './constants/constants';
+
 /* @ts-ignore */
 import * as xml from 'sax-parser';
 import { transcode } from 'buffer';
@@ -17,9 +19,7 @@ const electron  = window.require('electron') ;  // require electron like this in
 
 let ipcRenderer : IpcRenderer  = electron.ipcRenderer ; 
 
-ipcRenderer.on('response' , (event:IpcMessageEvent , args:any)=>{
-  console.log(args);
-})
+
 
 const DOMParser = new DomXMLParser();
 const SaxParser = new SaxXMLParser();
@@ -27,13 +27,14 @@ const SaxParser = new SaxXMLParser();
 const App: React.FC = () => {
   const serviceRef = useRef<DataService>(new DataService(DOMParser));
   const [data, setData] = useState<PersonData[]>([]);
+  const [dataString, setDataString] = useState('');
 
   const setParser = (type: "SAX"|"DOM") => {
     if(type === 'DOM') {
       serviceRef.current.setParser(DOMParser);
     } else {
       serviceRef.current.setParser(SaxParser);
-    }
+    } 
   }
 
   const search = (filters: DataSearchFilters) => {
@@ -47,6 +48,25 @@ const App: React.FC = () => {
   const clear = () => {
 
   }
+
+  const setDataStr = (dataStr: string) => {
+    setData(serviceRef.current.getData(dataStr, {}));   
+    setDataString(dataStr);
+  }
+
+  const registerIpc = () => {
+    ipcRenderer.send(FILE_REQUEST_MSG);
+
+    ipcRenderer.on(FILE_RESPONSE_MSG, (event, args) => {
+      alert(JSON.stringify(event));
+      alert(JSON.stringify(args));
+      setDataStr(args as string);
+    });
+  }
+
+  useEffect(() => {
+    registerIpc();
+  }, []);
 
   return (
     <div className="App">
