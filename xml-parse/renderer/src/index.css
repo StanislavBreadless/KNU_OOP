@@ -35,3 +35,7 @@ body::-webkit-scrollbar-thumb {
 .table-wrapper {
   /* margin-top: 30px; */
 }
+
+.app-wrapper {
+  display: flex;
+}

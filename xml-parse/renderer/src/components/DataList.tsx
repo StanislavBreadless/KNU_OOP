@@ -21,12 +21,20 @@ const DataTableHead = () => {
   )
 }
 
+const transformWorth = (worth: number) => {
+  const billions = worth / 1e9;
+  return `$${billions.toFixed(2)} B`;  
+} 
+
 const tableRow = (personData: PersonData) => {
+
+
+
   return (
     <tr>
       <td>{personData.name}</td>
-      <td>{personData.worth}</td>
-      <td>{personData.worth}</td>
+      <td>{transformWorth(personData.worth)}</td>
+      <td>{personData.age}</td>
       <td>{personData.country}</td>
       <td>{personData.source}</td>
       <td>{personData.industry}</td>
