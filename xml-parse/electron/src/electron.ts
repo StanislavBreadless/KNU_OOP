@@ -16,6 +16,9 @@ function createWindow() {
     );
     mainWindow.on("closed", () => (mainWindow.destroy()));
 
+ 
+    mainWindow.setMenu(null);
+
     ipcMain.on('error', (event : IpcMessageEvent , msg: string)=>{
         dialog.showErrorBox('Error', msg);
     })

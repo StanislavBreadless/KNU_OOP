@@ -2,6 +2,39 @@
   flex-grow: 3;
 }
 
+.data-table {
+  border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+}
+
+
+.data-table thead th {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+
+.data-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.data-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.data-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
 .options-form {
   flex-grow: 1;
 
@@ -9,23 +42,41 @@
   flex-direction: column;
 
   min-width: 200px;
+  padding-right: 50px;
 }
 
 .buttons-wrapper {
-  display: flex;
 
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons-wrapper button {
+  margin-top: 10px;
 }
 
 .dynamic-label {
-  color: lightgray; 
+  border: none;
+  background-color: #009879;
+  color: white; 
   margin-top: 20px;
 }
 
-.dynamic-label.active {
-  color: black;
+.dynamic-label label {
+  padding: 5px;
+  font-weight: bold;
+}
+
+.dynamic-label.active input {
+  background-color: white;
 }
 
 .dynamic-label input {
   display: block;
-  max-width: 100px;
+  width: 100%;
+  border: none;
+  background-color: lightgray;
+
+  font-size: 1.1rem;
 }

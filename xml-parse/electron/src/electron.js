@@ -14,6 +14,7 @@ function createWindow() {
         ? "http://localhost:3000"
         : "file://" + path.join(__dirname, "../build/index.html"));
     mainWindow.on("closed", function () { return (mainWindow.destroy()); });
+    mainWindow.setMenu(null);
     electron_1.ipcMain.on('error', function (event, msg) {
         electron_1.dialog.showErrorBox('Error', msg);
     });

@@ -32,12 +32,12 @@ const tableRow = (personData: PersonData) => {
 
   return (
     <tr>
-      <td>{personData.name}</td>
-      <td>{transformWorth(personData.worth)}</td>
-      <td>{personData.age}</td>
-      <td>{personData.country}</td>
-      <td>{personData.source}</td>
-      <td>{personData.industry}</td>
+      <td style={{width: '100px'}}>{personData.name}</td>
+      <td style={{width: '100px'}}>{transformWorth(personData.worth)}</td>
+      <td style={{width: '100px'}}>{personData.age}</td>
+      <td style={{width: '100px'}}>{personData.country}</td>
+      <td style={{width: '100px'}}>{personData.source}</td>
+      <td style={{width: '100px'}}>{personData.industry}</td>
     </tr>
   )
 }
