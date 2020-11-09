@@ -58,8 +58,6 @@ const App: React.FC = () => {
     ipcRenderer.send(FILE_REQUEST_MSG);
 
     ipcRenderer.on(FILE_RESPONSE_MSG, (event, args) => {
-      alert(JSON.stringify(event));
-      alert(JSON.stringify(args));
       setDataStr(args as string);
     });
   }
