@@ -102,8 +102,8 @@ export class ItemFilter {
       .industry(filters.industry)
       .source(filters.source)
       .country(filters.country)
-      .minWorth(filters.minWorth)
-      .maxWorth(filters.maxWorth);
+      .minWorth(filters.minWorth ? filters.minWorth * 1000_000_000 : filters.minWorth)
+      .maxWorth(filters.maxWorth ? filters.maxWorth * 1000_000_000 : filters.maxWorth);
 
     return itemFilter;
   }

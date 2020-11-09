@@ -7,7 +7,10 @@
   },
   "author": "nateshmbhat",
   "dependencies": {
-    "electron": "^5.0.6"
+    "@types/xmldom": "^0.1.30",
+    "electron": "^5.0.6",
+    "xmldom": "^0.4.0",
+    "xslt-ts": "^1.1.8"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",

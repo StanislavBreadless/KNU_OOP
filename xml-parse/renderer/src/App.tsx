@@ -9,7 +9,7 @@ import { DomXMLParser } from './xml-parsers/DomXMLParser';
 import { SaxXMLParser } from './xml-parsers/SaxXMLParser';
 import { DataSearchFilters, ParserType, PersonData } from './types';
 
-import { FILE_REQUEST_MSG, FILE_RESPONSE_MSG} from './constants/constants';
+import { FILE_REQUEST_MSG, FILE_RESPONSE_MSG, TRANSFORM_CALL } from './constants/constants';
 
 /* @ts-ignore */
 import * as xml from 'sax-parser';
@@ -42,7 +42,7 @@ const App: React.FC = () => {
   }
 
   const transform = () => {
-    
+    ipcRenderer.send(TRANSFORM_CALL, JSON.stringify(data));
   }
 
   const clear = () => {
