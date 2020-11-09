@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const serviceRef = useRef<DataService>(new DataService(DOMParser));
   const [data, setData] = useState<PersonData[]>([]);
   const [dataString, setDataString] = useState('');
+  const [currentParser, setCurrentParser] = useState<'DOM'|'SAX'>('DOM');
 
   const setParser = (type: "SAX"|"DOM") => {
     if(type === 'DOM') {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
     } else {
       serviceRef.current.setParser(SaxParser);
     } 
+    setCurrentParser(type);
   }
 
   const search = (filters: DataSearchFilters) => {
@@ -73,6 +75,7 @@ const App: React.FC = () => {
           setParser={setParser}
           search={search}
           transform={transform}
+          nextParser={currentParser === 'DOM' ? 'SAX' : 'DOM'}
           clear={clear}
         />
         <DataList 

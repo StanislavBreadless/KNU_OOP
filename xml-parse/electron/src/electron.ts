@@ -12,7 +12,7 @@ install(new DOMParser(), new XMLSerializer(), new DOMImplementation())
 let mainWindow : BrowserWindow ;
 
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 900, height: 680 ,  webPreferences : {
+    mainWindow = new BrowserWindow({ width: 900, height: 750 ,  webPreferences : {
         nodeIntegration: true,
       } });
     mainWindow.loadURL(

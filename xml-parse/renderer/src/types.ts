@@ -19,8 +19,8 @@ function isNumber(x: any): x is number {
 export function isPersonData(variable: any): variable is PersonData {
   return !!variable 
     && isString(variable.name)
-    && isNumber(variable.worth)
-    && isNumber(variable.age)
+    && isNumber(+variable.worth)
+    && isNumber(+variable.age)
     && isString(variable.source)
     && isString(variable.industry)
     && isString(variable.country);

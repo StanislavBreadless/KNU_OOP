@@ -10,7 +10,7 @@ var xslt_ts_1 = require("xslt-ts");
 xslt_ts_1.install(new xmldom_1.DOMParser(), new xmldom_1.XMLSerializer(), new xmldom_1.DOMImplementation());
 var mainWindow;
 function createWindow() {
-    mainWindow = new electron_1.BrowserWindow({ width: 900, height: 680, webPreferences: {
+    mainWindow = new electron_1.BrowserWindow({ width: 900, height: 750, webPreferences: {
             nodeIntegration: true
         } });
     mainWindow.loadURL(isDev

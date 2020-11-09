@@ -56,8 +56,13 @@ export class SaxXMLParser implements IXMLParser {
         currentTag 
         && currentTag !== XML_ITEM_TAG_NAME 
         && this.currentItem
+        && !!chars
     ) {
-      this.currentItem[currentTag] += chars;
+      if(!this.currentItem[currentTag]) {
+        this.currentItem[currentTag] = chars;
+      } else {
+        this.currentItem[currentTag] += chars;
+      }
     } 
   }
 
@@ -89,19 +94,31 @@ export class SaxXMLParser implements IXMLParser {
     this.parser = new xml.SaxParser((cb) => {
       cb.onStartDocument(() => {});
       cb.onEndDocument(() => {});
-      cb.onStartElementNS(this.onStartElement);
-      cb.onEndElementNS(this.onEndElement);
-      cb.onCharacters(this.onChars);
-      cb.onComment(this.onComment);
-      cb.onWarning(this.onWarning);
-      cb.onError(this.onError);
+      cb.onStartElementNS(this.onStartElement.bind(this));
+      cb.onEndElementNS(this.onEndElement.bind(this));
+      cb.onCharacters(this.onChars.bind(this));
+      cb.onComment(this.onComment.bind(this));
+      cb.onWarning(this.onWarning.bind(this));
+      cb.onError(this.onError.bind(this));
     });
 
+    
     this.parsingResult = [];
     this.tagsStack = [];
   }
 
   private initParsing() {
+    this.parser = new xml.SaxParser((cb) => {
+      cb.onStartDocument(() => {});
+      cb.onEndDocument(() => {});
+      cb.onStartElementNS(this.onStartElement.bind(this));
+      cb.onEndElementNS(this.onEndElement.bind(this));
+      cb.onCharacters(this.onChars.bind(this));
+      cb.onComment(this.onComment.bind(this));
+      cb.onWarning(this.onWarning.bind(this));
+      cb.onError(this.onError.bind(this));
+    });
+
     this.parsingResult = [];
     this.tagsStack = [];
     this.currentItem = null;

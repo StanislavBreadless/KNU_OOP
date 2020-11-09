@@ -9,6 +9,7 @@ interface IOptionsFormProps {
   search: (searchParams: DataSearchFilters) => void;
   transform: () => void;
   clear: () => void;
+  nextParser: ParserType;
 }
 
 interface IOptionsFormState {
@@ -114,6 +115,9 @@ export class OptionsForm extends React.Component<IOptionsFormProps, DataSearchFi
         ></StringLabel>
 
         <div className='buttons-wrapper'>
+          <button onClick={() => this.props.setParser(this.props.nextParser)}>Switch to {
+            this.props.nextParser
+          }</button>
           <button onClick={() => this.props.search(this.state)}>Search</button>
           <button onClick={() => {
             Object.keys(this.state).forEach(key => this.setState({
