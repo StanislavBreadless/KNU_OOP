@@ -25,7 +25,7 @@ function StringLabel(props: {
   return (
     <label className={`dynamic-label ${!!value ? "active" : ""}`}>
       {textLabel}
-      <input value={value} onChange={e => setValue(e.target.value)}></input>
+      <input value={value ? value: ''} onChange={e => setValue(e.target.value)}></input>
     </label>
   )
 }
@@ -62,13 +62,11 @@ function NumberLabel(props: {
   />
 }
 
-export class OptionsForm extends React.Component<IOptionsFormProps, IOptionsFormState> {
+export class OptionsForm extends React.Component<IOptionsFormProps, DataSearchFilters> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      filterOptions: {}
-    };
+    this.state = {};
   }
 
   render() {
@@ -76,48 +74,52 @@ export class OptionsForm extends React.Component<IOptionsFormProps, IOptionsForm
       <div className='options-form'>
         <StringLabel
           textLabel={'Name:'}
-          value={this.state.filterOptions.name}
-          setValue={(name) => this.setState({ filterOptions: { name} })}
+          value={this.state.name}
+          setValue={(name) => this.setState({  name  })}
         ></StringLabel>
         <NumberLabel
           textLabel={'Minimum age:'}
-          value={this.state.filterOptions.minAge}
-          setValue={(minAge) => this.setState({ filterOptions: { minAge} })}
+          value={this.state.minAge}
+          setValue={(minAge) => this.setState({ minAge })}
         ></NumberLabel>
         <NumberLabel
           textLabel={'Maximum age:'}
-          value={this.state.filterOptions.minAge}
-          setValue={(maxAge) => this.setState({ filterOptions: { maxAge} })}
+          value={this.state.maxAge}
+          setValue={(maxAge) => this.setState({ maxAge })}
         ></NumberLabel>
         <NumberLabel
           textLabel={'Minimum worth (is $ billions):'}
-          value={this.state.filterOptions.minWorth}
-          setValue={(minWorth) => this.setState({ filterOptions: { minWorth } })}
+          value={this.state.minWorth}
+          setValue={(minWorth) => this.setState({ minWorth })}
         ></NumberLabel>
         <NumberLabel
           textLabel={'Maximum worth (is $ billions):'}
-          value={this.state.filterOptions.maxWorth}
-          setValue={(maxWorth) => this.setState({ filterOptions: { maxWorth } })}
+          value={this.state.maxWorth}
+          setValue={(maxWorth) => this.setState({  maxWorth })}
         ></NumberLabel>
         <StringLabel
           textLabel={'Source:'}
-          value={this.state.filterOptions.source}
-          setValue={(source) => this.setState({ filterOptions: { source } })}
+          value={this.state.source}
+          setValue={(source) => this.setState({  source })}
         ></StringLabel>
         <StringLabel
           textLabel={'Country:'}
-          value={this.state.filterOptions.country}
-          setValue={(country) => this.setState({ filterOptions: { country } })}
+          value={this.state.country}
+          setValue={(country) => this.setState({  country  })}
         ></StringLabel>
         <StringLabel
           textLabel={'Industry:'}
-          value={this.state.filterOptions.industry}
-          setValue={(industry) => this.setState({ filterOptions: { industry } })}
+          value={this.state.industry}
+          setValue={(industry) => this.setState({  industry })}
         ></StringLabel>
 
         <div className='buttons-wrapper'>
-          <button onClick={() => this.props.search(this.state.filterOptions)}>Search</button>
-          <button onClick={() => this.props.clear()}>Clear</button>
+          <button onClick={() => this.props.search(this.state)}>Search</button>
+          <button onClick={() => {
+            Object.keys(this.state).forEach(key => this.setState({
+              [key]: undefined
+            }));
+          }}>Clear</button>
           <button onClick={() => this.props.transform()}>Transform</button>
         </div>
       </div>

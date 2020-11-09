@@ -38,11 +38,11 @@ const App: React.FC = () => {
   }
 
   const search = (filters: DataSearchFilters) => {
-
+    setData(serviceRef.current.getData(dataString, filters));
   }
 
   const transform = () => {
-
+    
   }
 
   const clear = () => {

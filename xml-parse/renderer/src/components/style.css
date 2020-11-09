@@ -17,8 +17,12 @@
 }
 
 .dynamic-label {
-  
+  color: lightgray; 
   margin-top: 20px;
+}
+
+.dynamic-label.active {
+  color: black;
 }
 
 .dynamic-label input {
